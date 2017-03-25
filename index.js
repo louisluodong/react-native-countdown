@@ -1,7 +1,7 @@
 /**
- * Created by guguyanhua on 12/11/15.
+ * Created by louis on 25/03/17.
  */
-import React from 'react';
+import React ,{ Component} from 'react';
 import {
     Image,
     Text,
@@ -11,22 +11,25 @@ import {
     TouchableHighlight,
     TouchableWithoutFeedback
 } from 'react-native';
-var TimerMixin = require('react-timer-mixin');
+import TimerMixin from 'react-timer-mixin';
 
-var CountDown = React.createClass({
-  mixins: [TimerMixin],
-  getInitialState: function () {
-    return {
-      time: this.props.time ? this.props.time : 60,
-      disabled: true
-    };
-  },
+export default class CountDown extends Component{
+//   mixins: [TimerMixin]
+  constructor( props ){
+      super(props)
+      this.state = {
+          time: this.props.time ? this.props.time : 60,
+            disabled: true
+      }
+  }
+
   componentDidMount(){
     this._countdown();
-  },
+  }
+
   render(){
-    var style = [styles.text];
-    var component;
+    let style = [styles.text];
+    let component;
     if (this.state.disabled) {
       style.push({color: 'gray'});
       style.push(this.props.disabledTextStyle);
@@ -43,7 +46,7 @@ var CountDown = React.createClass({
       component =
           <TouchableHighlight
               style={[styles.wrapper,this.props.buttonStyle]}
-              onPress={this._onPress.bind(this)}
+              onPress={ ()=>this._onPress()}
               >
             <Text style={[style,this.props.textStyle]}>{this.props.text}({this.state.time})</Text>
           </TouchableHighlight>
@@ -51,7 +54,7 @@ var CountDown = React.createClass({
     return (
         component
     )
-  },
+  }
   _onPress(){
     if (this.state.disabled) {
       //nothing
@@ -62,7 +65,7 @@ var CountDown = React.createClass({
           this.props.onPress();
       }
     }
-  },
+  }
 
   _countdown(){
     var timer = function () {
@@ -79,7 +82,7 @@ var CountDown = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   text: {
     color: 'black'
   },
@@ -89,5 +92,3 @@ var styles = StyleSheet.create({
     backgroundColor: '#e5e5e5',
   }
 });
-
-module.exports = CountDown;
